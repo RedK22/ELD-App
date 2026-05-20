@@ -1,0 +1,21 @@
+# Python
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.pyc
+backend/db.sqlite3
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Env
+.env
+*.env
+
+node_modules/
+dist/
+.env
+*.pyc
+__pycache__/
+*:Zone.Identifier
