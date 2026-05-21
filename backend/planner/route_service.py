@@ -1,5 +1,5 @@
 """
-RouteService — geocoding + routing via OpenRouteService (free tier).
+RouteService - geocoding + routing via OpenRouteService (free tier).
 Falls back to straight-line distance estimate if API key is absent.
 """
 
@@ -143,7 +143,7 @@ def _fallback_route(origin: str, pickup: str, dropoff: str) -> dict:
     When ORS is unavailable, return a plausible synthetic route
     based on US average city distances so the app still works for demos.
     """
-    # Rough miles — just enough to exercise the HOS engine meaningfully
+    # Rough miles - just enough to exercise the HOS engine meaningfully
     leg1_miles = 350.0
     leg2_miles = 600.0
     return {
@@ -170,5 +170,5 @@ def _fallback_route(origin: str, pickup: str, dropoff: str) -> dict:
             {"name": pickup,  "coords": [-93.0979, 44.9778]},
             {"name": dropoff, "coords": [-104.9903, 39.7392]},
         ],
-        "note": "Live geocoding unavailable — distances are estimates.",
+        "note": "Live geocoding unavailable - distances are estimates.",
     }

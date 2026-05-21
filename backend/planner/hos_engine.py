@@ -1,5 +1,5 @@
 """
-HOSEngine — FMCSA Hours of Service compliance engine
+HOSEngine - FMCSA Hours of Service compliance engine
 Property-carrying driver, 70 hr / 8 day cycle.
 
 Rules enforced:
@@ -89,7 +89,7 @@ class HOSEngine:
     """
 
     def __init__(self, cycle_hours_used: float = 0.0):
-        # Rolling 8-day accumulator — simplified: treat as hours already burned
+        # Rolling 8-day accumulator - simplified: treat as hours already burned
         self.cycle_hours_used = min(cycle_hours_used, MAX_CYCLE_HOURS)
 
     def plan(
@@ -318,7 +318,7 @@ class HOSEngine:
                 miles_from_start=total_miles,
             ))
 
-        # End of trip — driver goes off duty
+        # End of trip - driver goes off duty
         add_segment('off_duty', abs_hour, min(abs_hour + 1.0, (day_of(abs_hour) + 1) * 24.0), "End of trip")
 
         # Assign miles to each day proportionally (simplified)

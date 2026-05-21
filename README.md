@@ -1,14 +1,16 @@
 # ELD Trip Planner
 
-FMCSA-compliant HOS trip planner. Enter origin, pickup, and dropoff — get a route map, stop schedule, and filled ELD daily log sheets.
+FMCSA-compliant HOS trip planner. Enter origin, pickup, and dropoff - get a route map, stop schedule, and filled ELD daily log sheets.
 
 ## Stack
+
 - **Backend:** Django + Django REST Framework
 - **Frontend:** React + Vite + Leaflet
 
 ## Run locally
 
 ### Backend
+
 ```bash
 cd backend
 python3 -m venv venv
@@ -18,6 +20,7 @@ python manage.py runserver
 ```
 
 ### Frontend
+
 ```bash
 cd frontend
 npm install
@@ -31,9 +34,10 @@ Open http://localhost:5173
 `backend/.env` is included with the ORS API key pre-filled.
 
 For deployment, set these in your host's dashboard:
-- `ORS_API_KEY` — OpenRouteService API key
-- `SECRET_KEY` — Django secret key
-- `DEBUG` — set to `False` in production
+
+- `ORS_API_KEY` - OpenRouteService API key
+- `SECRET_KEY` - Django secret key
+- `DEBUG` - set to `False` in production
 
 ## Deploy
 
@@ -41,6 +45,7 @@ For deployment, set these in your host's dashboard:
 - **Backend → Railway:** import the `backend/` folder, it will detect the `Procfile` automatically
 
 ## HOS Rules enforced
+
 - 11-hour driving limit per shift
 - 14-hour driving window
 - 30-minute break after 8 cumulative driving hours
