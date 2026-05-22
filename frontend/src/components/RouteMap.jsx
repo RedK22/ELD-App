@@ -1,27 +1,29 @@
-import { MapContainer, TileLayer, Polyline, Marker, Popup } from "react-leaflet";
+import {MapContainer, TileLayer, Polyline, Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// Fix default marker icons (Leaflet + Vite issue)
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-  iconUrl:       "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-  shadowUrl:     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
 });
 
 const STOP_COLORS = {
-  pickup:  "#2ECC71",
+  pickup: "#2ECC71",
   dropoff: "#E74C3C",
-  fuel:    "#F39C12",
-  rest:    "#4A90D9",
+  fuel: "#F39C12",
+  rest: "#4A90D9",
 };
 
 const STOP_ICONS = {
-  pickup:  "🟢",
+  pickup: "🟢",
   dropoff: "🔴",
-  fuel:    "⛽",
-  rest:    "🛏️",
+  fuel: "⛽",
+  rest: "🛏️",
 };
 
 function makeIcon(color) {
@@ -37,13 +39,21 @@ function makeIcon(color) {
   });
 }
 
-export default function RouteMap({ route, stops }) {
+export default function RouteMap({route, stops}) {
   if (!route || !route.waypoints?.length) {
     return (
-      <div style={{ height: 400, display: "flex", alignItems: "center",
-                    justifyContent: "center", background: "#f5f5f5",
-                    border: "1px solid #ddd", borderRadius: 8 }}>
-        <span style={{ color: "#999" }}>No route data</span>
+      <div
+        style={{
+          height: 400,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#f5f5f5",
+          border: "1px solid #ddd",
+          borderRadius: 8,
+        }}
+      >
+        <span style={{color: "#999"}}>No route data</span>
       </div>
     );
   }
@@ -54,18 +64,30 @@ export default function RouteMap({ route, stops }) {
     : [39.5, -98.35]; // center of US
 
   // Polyline: ORS returns [lon, lat], Leaflet needs [lat, lon]
-  const polyline = (route.polyline || []).map(c => [c[1], c[0]]);
+  const polyline = (route.polyline || []).map((c) => [c[1], c[0]]);
 
   return (
-    <div style={{ borderRadius: 8, overflow: "hidden", border: "1px solid #ddd" }}>
-      <MapContainer center={center} zoom={5} style={{ height: 420 }} scrollWheelZoom={false}>
+    <div
+      style={{borderRadius: 8, overflow: "hidden", border: "1px solid #ddd"}}
+    >
+      <MapContainer
+        center={center}
+        zoom={5}
+        style={{height: 420}}
+        scrollWheelZoom={false}
+      >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
         {polyline.length > 1 && (
-          <Polyline positions={polyline} color="#3B82F6" weight={3} opacity={0.8} />
+          <Polyline
+            positions={polyline}
+            color="#3B82F6"
+            weight={3}
+            opacity={0.8}
+          />
         )}
 
         {/* Waypoint markers (origin, pickup, dropoff) */}
@@ -77,38 +99,69 @@ export default function RouteMap({ route, stops }) {
           return (
             <Marker key={i} position={pos} icon={makeIcon(colors[i] || "#888")}>
               <Popup>
-                <strong>{labels[i] || wp.name}</strong><br />{wp.name}
+                <strong>{labels[i] || wp.name}</strong>
+                <br />
+                {wp.name}
               </Popup>
             </Marker>
           );
         })}
 
         {/* Stop markers (fuel, rest) */}
-        {(stops || []).filter(s => s.type === "fuel" || s.type === "rest").map((stop, i) => {
-          if (!stop.coords) return null;
-          const pos = [stop.coords[1], stop.coords[0]];
-          return (
-            <Marker key={`stop-${i}`} position={pos} icon={makeIcon(STOP_COLORS[stop.type] || "#888")}>
-              <Popup>
-                <strong>{STOP_ICONS[stop.type]} {stop.type.toUpperCase()}</strong><br />
-                {stop.location}<br />
-                <span style={{ fontSize: 12, color: "#666" }}>
-                  {stop.duration === 0.5 ? "30 min" : `${stop.duration} hr`} stop
-                  &nbsp;· {stop.miles_from_start} mi
-                </span>
-              </Popup>
-            </Marker>
-          );
-        })}
+        {(stops || [])
+          .filter((s) => s.type === "fuel" || s.type === "rest")
+          .map((stop, i) => {
+            if (!stop.coords) return null;
+            const pos = [stop.coords[1], stop.coords[0]];
+            return (
+              <Marker
+                key={`stop-${i}`}
+                position={pos}
+                icon={makeIcon(STOP_COLORS[stop.type] || "#888")}
+              >
+                <Popup>
+                  <strong>
+                    {STOP_ICONS[stop.type]} {stop.type.toUpperCase()}
+                  </strong>
+                  <br />
+                  {stop.location}
+                  <br />
+                  <span style={{fontSize: 12, color: "#666"}}>
+                    {stop.duration === 0.5 ? "30 min" : `${stop.duration} hr`}{" "}
+                    stop &nbsp;· {stop.miles_from_start} mi
+                  </span>
+                </Popup>
+              </Marker>
+            );
+          })}
       </MapContainer>
 
       {/* Legend */}
-      <div style={{ padding: "8px 12px", background: "#fafafa", borderTop: "1px solid #eee",
-                    display: "flex", gap: 16, flexWrap: "wrap", fontSize: 12 }}>
+      <div
+        style={{
+          padding: "8px 12px",
+          background: "#fafafa",
+          borderTop: "1px solid #eee",
+          display: "flex",
+          gap: 16,
+          flexWrap: "wrap",
+          fontSize: 12,
+        }}
+      >
         {Object.entries(STOP_ICONS).map(([type, icon]) => (
-          <span key={type} style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <span style={{ width: 10, height: 10, borderRadius: "50%",
-                           background: STOP_COLORS[type], display: "inline-block" }} />
+          <span
+            key={type}
+            style={{display: "flex", alignItems: "center", gap: 4}}
+          >
+            <span
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: "50%",
+                background: STOP_COLORS[type],
+                display: "inline-block",
+              }}
+            />
             {icon} {type.charAt(0).toUpperCase() + type.slice(1)}
           </span>
         ))}
